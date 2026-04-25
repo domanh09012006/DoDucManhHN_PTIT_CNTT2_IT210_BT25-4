@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Todo</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+
+    <body class="bg-light">
+
+        <div class="container mt-4">
+
+            <h3 class="mb-3">Danh sách Todo</h3>
+
+            <table class="table table-bordered table-hover bg-white">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nội dung</th>
+                        <th>Ngày</th>
+                        <th>Trạng thái</th>
+                        <th>Ưu tiên</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="t : ${todos}">
+                        <td th:text="${t.id}"></td>
+                        <td th:text="${t.content}"></td>
+                        <td th:text="${t.dueDate}"></td>
+                        <td th:text="${t.status}"></td>
+                        <td th:text="${t.priority}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="mb-3">Thêm công việc</h3>
+
+            <form th:action="@{/add}" method="post" th:object="${todo}" class="bg-white p-3 border rounded">
+
+                <div class="form-group">
+                    <label>Nội dung</label>
+                    <input type="text" class="form-control" th:field="*{content}">
+                    <small class="text-danger" th:errors="*{content}"></small>
+                </div>
+
+                <div class="form-group">
+                    <label>Ngày</label>
+                    <input type="date" class="form-control" th:field="*{dueDate}">
+                    <small class="text-danger" th:errors="*{dueDate}"></small>
+                </div>
+
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select class="form-control" th:field="*{status}">
+                        <option value="">--Chọn--</option>
+                        <option value="PENDING">PENDING</option>
+                        <option value="DONE">DONE</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Ưu tiên</label>
+                    <select class="form-control" th:field="*{priority}">
+                        <option value="">--Chọn--</option>
+                        <option value="LOW">LOW</option>
+                        <option value="MEDIUM">MEDIUM</option>
+                        <option value="HIGH">HIGH</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-block">Thêm</button>
+            </form>
+
+        </div>
+
+        <!-- JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    </body>
+</html>
