@@ -1,88 +1,115 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Todo</title>
+        <title>Todo App</title>
 
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Bootstrap 4 -->
         <link rel="stylesheet"
               href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
 
-    <body class="bg-light">
+    <body>
 
         <div class="container mt-4">
 
-            <h3 class="mb-3">Danh sách Todo</h3>
+            <h2 class="text-center mb-4">Todo App</h2>
+            <div th:if="${message}" class="alert alert-success">
+                <span th:text="${message}"></span>
+            </div>
 
-            <table class="table table-bordered table-hover bg-white">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nội dung</th>
-                        <th>Ngày</th>
-                        <th>Trạng thái</th>
-                        <th>Ưu tiên</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr th:each="t : ${todos}">
-                        <td th:text="${t.id}"></td>
-                        <td th:text="${t.content}"></td>
-                        <td th:text="${t.dueDate}"></td>
-                        <td th:text="${t.status}"></td>
-                        <td th:text="${t.priority}"></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3 class="mb-3">Thêm công việc</h3>
-
-            <form th:action="@{/add}" method="post" th:object="${todo}" class="bg-white p-3 border rounded">
-
-                <div class="form-group">
-                    <label>Nội dung</label>
-                    <input type="text" class="form-control" th:field="*{content}">
-                    <small class="text-danger" th:errors="*{content}"></small>
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    Danh sách công việc
                 </div>
 
-                <div class="form-group">
-                    <label>Ngày</label>
-                    <input type="date" class="form-control" th:field="*{dueDate}">
-                    <small class="text-danger" th:errors="*{dueDate}"></small>
+                <div class="card-body p-0">
+                    <table class="table table-bordered table-hover mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nội dung</th>
+                                <th>Hạn</th>
+                                <th>Trạng thái</th>
+                                <th>Độ ưu tiên</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr th:each="t : ${todos}">
+                                <td th:text="${t.id}"></td>
+                                <td th:text="${t.content}"></td>
+                                <td th:text="${t.dueDate}"></td>
+                                <td th:text="${t.status}"></td>
+                                <td th:text="${t.priority}"></td>
+
+                                <td>
+                                    <a th:href="@{/edit/{id}(id=${t.id})}"
+                                       class="btn btn-warning btn-sm">
+                                        Sửa
+                                    </a>
+
+                                    <a th:href="@{/delete/{id}(id=${t.id})}"
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Bạn chắc chắn muốn xóa?')">
+                                        Xóa
+                                    </a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    Thêm / Cập nhật công việc
                 </div>
 
-                <div class="form-group">
-                    <label>Trạng thái</label>
-                    <select class="form-control" th:field="*{status}">
-                        <option value="">--Chọn--</option>
-                        <option value="PENDING">PENDING</option>
-                        <option value="DONE">DONE</option>
-                    </select>
-                </div>
+                <div class="card-body">
+                    <form th:action="@{/update}" method="post" th:object="${todo}">
 
-                <div class="form-group">
-                    <label>Ưu tiên</label>
-                    <select class="form-control" th:field="*{priority}">
-                        <option value="">--Chọn--</option>
-                        <option value="LOW">LOW</option>
-                        <option value="MEDIUM">MEDIUM</option>
-                        <option value="HIGH">HIGH</option>
-                    </select>
-                </div>
+                        <input type="hidden" th:field="*{id}">
 
-                <button type="submit" class="btn btn-success btn-block">Thêm</button>
-            </form>
+                        <div class="form-group">
+                            <label>Nội dung</label>
+                            <input type="text" class="form-control" th:field="*{content}">
+                            <small class="text-danger" th:errors="*{content}"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ngày hết hạn</label>
+                            <input type="date" class="form-control" th:field="*{dueDate}">
+                            <small class="text-danger" th:errors="*{dueDate}"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Trạng thái</label>
+                            <input type="text" class="form-control" th:field="*{status}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Độ ưu tiên</label>
+                            <input type="text" class="form-control" th:field="*{priority}">
+                        </div>
+
+                        <button type="submit" class="btn btn-success">
+                            Lưu
+                        </button>
+
+                        <a href="/" class="btn btn-secondary">
+                            Reset
+                        </a>
+
+                    </form>
+                </div>
+            </div>
 
         </div>
-
-        <!-- JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     </body>
 </html>
