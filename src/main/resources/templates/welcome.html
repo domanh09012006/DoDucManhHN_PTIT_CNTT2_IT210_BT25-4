@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Welcome</title>
+    </head>
+    <body>
+
+        <h2>Nhập tên của bạn</h2>
+
+        <form th:action="@{/save-name}" method="post">
+            <input type="text" name="name" required>
+            <button type="submit">Vào Todo</button>
+        </form>
+
+    </body>
+</html>
